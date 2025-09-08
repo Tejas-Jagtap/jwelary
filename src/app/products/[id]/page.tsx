@@ -1,11 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { products } from '@/data/products';
 import ProductCard from '@/components/ProductCard';
+import { apiClient } from '@/lib/apiClient';
 import { 
   ShoppingCart, 
   Heart, 
@@ -22,13 +22,44 @@ export default function ProductDetailPage() {
   const params = useParams();
   const productId = params.id as string;
   
-  const product = products.find(p => p.id === productId);
-  const relatedProducts = products
-    .filter(p => p.category === product?.category && p.id !== productId)
-    .slice(0, 4);
-
+  const [product, setProduct] = useState<any>(null);
+  const [relatedProducts, setRelatedProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
+
+  useEffect(() => {
+    if (productId) {
+      fetchProduct();
+    }
+  }, [productId]);
+
+  const fetchProduct = async () => {
+    try {
+      setLoading(true);
+      const productData = await apiClient.getProduct(productId) as any;
+      setProduct(productData);
+      
+      // Fetch related products
+      const allProducts = await apiClient.getProducts();
+      const related = (allProducts as any[])
+        .filter((p: any) => p.id !== productId && p.category === productData.category)
+        .slice(0, 4);
+      setRelatedProducts(related);
+    } catch (error) {
+      console.error('Error fetching product:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-yellow-600"></div>
+      </div>
+    );
+  }
 
   if (!product) {
     return (
@@ -102,7 +133,7 @@ export default function ProductDetailPage() {
             
             {product.images.length > 1 && (
               <div className="flex space-x-2 overflow-x-auto">
-                {product.images.map((image, index) => (
+                {product.images.map((image: string, index: number) => (
                   <button
                     key={index}
                     onClick={() => setSelectedImageIndex(index)}

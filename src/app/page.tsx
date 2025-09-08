@@ -1,11 +1,53 @@
 import Image from "next/image";
 import Link from "next/link";
-import { products, categories } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
 import { ArrowRight, Star, Shield, Truck, HeadphonesIcon } from "lucide-react";
 
-export default function Home() {
-  const featuredProducts = products.filter(product => product.featured).slice(0, 4);
+async function getFeaturedProducts() {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000'}/api/products?featured=true`, {
+      cache: 'no-store'
+    });
+    if (!res.ok) return [];
+    const products = await res.json();
+    return products.slice(0, 4);
+  } catch {
+    return [];
+  }
+}
+
+async function getCategories() {
+  return [
+    {
+      id: 'rings',
+      name: 'Rings',
+      image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400&h=300&fit=crop',
+      description: 'Engagement rings, wedding bands, and fashion rings'
+    },
+    {
+      id: 'necklaces',
+      name: 'Necklaces',
+      image: 'https://images.unsplash.com/photo-1506630448388-4e683c67ddb0?w=400&h=300&fit=crop',
+      description: 'Elegant necklaces and pendants for every occasion'
+    },
+    {
+      id: 'earrings',
+      name: 'Earrings',
+      image: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400&h=300&fit=crop',
+      description: 'Stunning earrings from studs to statement pieces'
+    },
+    {
+      id: 'bracelets',
+      name: 'Bracelets',
+      image: 'https://images.unsplash.com/photo-1611652022419-a9419f74343d?w=400&h=300&fit=crop',
+      description: 'Beautiful bracelets and bangles'
+    }
+  ];
+}
+
+export default async function Home() {
+  const featuredProducts = await getFeaturedProducts();
+  const categories = await getCategories();
 
   return (
     <div className="min-h-screen">
@@ -138,7 +180,7 @@ export default function Home() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            {featuredProducts.map((product) => (
+            {featuredProducts.map((product: any) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>

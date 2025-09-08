@@ -1,34 +1,59 @@
 'use client';
 
-import { useState, useMemo } from 'react';
-import { products, categories } from '@/data/products';
+import { useState, useMemo, useEffect } from 'react';
 import ProductCard from '@/components/ProductCard';
 import { Filter, Grid, List, Search } from 'lucide-react';
+import { apiClient } from '@/lib/apiClient';
 
 export default function ProductsPage() {
+  const [products, setProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('name');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+
+  const categories = [
+    { id: 'rings', name: 'Rings' },
+    { id: 'necklaces', name: 'Necklaces' },
+    { id: 'earrings', name: 'Earrings' },
+    { id: 'bracelets', name: 'Bracelets' }
+  ];
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      const data = await apiClient.getProducts();
+      setProducts(data as any[]);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const filteredProducts = useMemo(() => {
     let filtered = products;
 
     // Filter by category
     if (selectedCategory !== 'all') {
-      filtered = filtered.filter(product => product.category === selectedCategory);
+      filtered = filtered.filter((product: any) => product.category === selectedCategory);
     }
 
     // Filter by search query
     if (searchQuery) {
-      filtered = filtered.filter(product =>
+      filtered = filtered.filter((product: any) =>
         product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         product.description.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
 
     // Sort products
-    filtered.sort((a, b) => {
+    filtered.sort((a: any, b: any) => {
       switch (sortBy) {
         case 'price-low':
           return a.price - b.price;
@@ -42,7 +67,7 @@ export default function ProductsPage() {
     });
 
     return filtered;
-  }, [selectedCategory, searchQuery, sortBy]);
+  }, [products, selectedCategory, searchQuery, sortBy]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -121,18 +146,29 @@ export default function ProductsPage() {
         {/* Results Count */}
         <div className="mb-6">
           <p className="text-gray-600">
-            Showing {filteredProducts.length} of {products.length} products
+            {loading ? 'Loading...' : `Showing ${filteredProducts.length} products`}
           </p>
         </div>
 
         {/* Products Grid */}
-        {filteredProducts.length > 0 ? (
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="bg-white rounded-lg shadow-md p-4 animate-pulse">
+                <div className="aspect-square bg-gray-200 rounded-lg mb-4"></div>
+                <div className="h-4 bg-gray-200 rounded mb-2"></div>
+                <div className="h-3 bg-gray-200 rounded mb-4"></div>
+                <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+              </div>
+            ))}
+          </div>
+        ) : filteredProducts.length > 0 ? (
           <div className={`grid gap-6 ${
             viewMode === 'grid' 
               ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' 
               : 'grid-cols-1'
           }`}>
-            {filteredProducts.map((product) => (
+            {filteredProducts.map((product: any) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>

@@ -1,36 +1,184 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Jwelary Shop - Modern E-commerce Platform
 
-## Getting Started
+A modern, responsive jewelry shop built with Next.js 15, featuring a separated frontend and backend architecture.
 
-First, run the development server:
+## 🏗️ Architecture
 
+- **Frontend**: Next.js 15 with React, TypeScript, and Tailwind CSS (Port 3000)
+- **Backend**: Express.js API server with TypeScript (Port 5000)
+- **Database**: SQLite with Prisma ORM
+- **Authentication**: JWT tokens with HTTP-only cookies
+
+## 🚀 Quick Start
+
+### Option 1: Run Both Servers Simultaneously
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Install all dependencies and setup
+npm run setup:full
+
+# Start both frontend and backend
+npm run dev:full
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Option 2: Run Servers Separately
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Backend (Port 5000):**
+```bash
+cd backend
+npm install
+npm run db:generate
+npm run db:push
+npm run db:seed
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Frontend (Port 3000):**
+```bash
+npm install
+npm run dev:frontend
+```
 
-## Learn More
+### Option 3: Use the Setup Script
+```bash
+./start-dev.sh
+```
 
-To learn more about Next.js, take a look at the following resources:
+## 📍 URLs
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Website**: http://localhost:3000
+- **Admin Panel**: http://localhost:3000/admin
+- **Backend API**: http://localhost:5000/api
+- **Health Check**: http://localhost:5000/health
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🔐 Admin Access
 
-## Deploy on Vercel
+- **Email**: admin@jwelary.com
+- **Password**: admin123
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## ✨ Features
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Customer Website
+- 🏠 Modern homepage with featured products
+- 📱 Responsive product catalog with filtering
+- 🔍 Advanced search functionality
+- 📋 Detailed product pages with specifications
+- 🎨 Beautiful UI with Tailwind CSS
+
+### Admin Panel
+- 👤 Secure authentication system
+- 📊 Dashboard with business overview
+- ➕ Add new jewelry products
+- ✏️ Edit existing products
+- 🗑️ Delete products
+- 📋 Product management with search/filter
+
+### Backend API
+- 🔒 JWT-based authentication
+- 🛡️ Role-based authorization (Admin/User)
+- 📝 RESTful API endpoints
+- 🗄️ Database operations with Prisma
+- 🔄 CORS configured for frontend communication
+
+## 📁 Project Structure
+
+```
+jwelary/
+├── backend/              # Express.js API server
+│   ├── src/
+│   │   ├── controllers/  # Route controllers
+│   │   ├── routes/       # API routes  
+│   │   ├── middleware/   # Auth middleware
+│   │   ├── lib/         # Utilities
+│   │   └── index.ts     # Server entry point
+│   ├── prisma/          # Database schema
+│   └── package.json     # Backend dependencies
+├── src/                 # Next.js frontend
+│   ├── app/            # App router pages
+│   ├── components/     # React components
+│   ├── contexts/       # React contexts
+│   └── lib/           # Frontend utilities
+├── package.json        # Frontend dependencies
+└── README.md          # This file
+```
+
+## 🛠️ Technology Stack
+
+### Frontend
+- **Next.js 15** - React framework with App Router
+- **TypeScript** - Type safety
+- **Tailwind CSS** - Utility-first styling
+- **Lucide React** - Modern icons
+
+### Backend
+- **Express.js** - Web framework
+- **TypeScript** - Type safety
+- **Prisma** - Database ORM
+- **JWT** - Authentication tokens
+- **bcryptjs** - Password hashing
+
+## 📡 API Endpoints
+
+### Authentication
+- `POST /api/auth/login` - User login
+- `POST /api/auth/logout` - User logout
+- `GET /api/auth/me` - Get current user
+- `POST /api/auth/register` - Register new user
+
+### Products
+- `GET /api/products` - Get all products
+- `GET /api/products/:id` - Get single product
+- `POST /api/products` - Create product (Admin)
+- `PUT /api/products/:id` - Update product (Admin)
+- `DELETE /api/products/:id` - Delete product (Admin)
+
+## 🗄️ Database Schema
+
+- **Users** - Authentication and roles
+- **Products** - Jewelry items with specifications
+- **Categories** - Product categorization
+- **Orders** - Customer orders (future feature)
+
+## 🔧 Development Scripts
+
+### Root Package Scripts
+```bash
+npm run dev:full        # Start both servers
+npm run dev:frontend    # Start only frontend
+npm run dev:backend     # Start only backend
+npm run setup:full      # Setup everything
+npm run setup:backend   # Setup only backend
+```
+
+### Backend Scripts
+```bash
+npm run dev            # Development server
+npm run build          # Build for production
+npm run db:generate    # Generate Prisma client
+npm run db:push        # Apply schema changes
+npm run db:seed        # Seed sample data
+```
+
+## 🌟 Key Features Implemented
+
+- ✅ **Separated Architecture** - Independent frontend/backend
+- ✅ **Modern Design** - Responsive, mobile-first approach
+- ✅ **Authentication** - Secure JWT-based auth system
+- ✅ **Admin Panel** - Complete product management
+- ✅ **API First** - RESTful backend ready for expansion
+- ✅ **Type Safety** - Full TypeScript implementation
+- ✅ **Database ORM** - Prisma for type-safe queries
+- ✅ **CORS Support** - Proper cross-origin configuration
+
+## 📈 Future Enhancements
+
+- 🛒 Shopping cart functionality
+- 💳 Payment integration
+- 📧 Email notifications
+- 📱 Mobile app support
+- 🔍 Advanced search with filters
+- 📊 Analytics dashboard
+- 🎨 Theme customization
+
+---
+
+**Built with ❤️ using Next.js, Express.js, and modern web technologies**
