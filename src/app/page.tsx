@@ -52,39 +52,39 @@ export default async function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative h-[600px] bg-gradient-to-r from-yellow-50 to-yellow-100 flex items-center">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
-              <h1 className="text-4xl lg:text-6xl font-bold text-gray-800 leading-tight">
+      <section className="relative min-h-[500px] md:h-[600px] bg-gradient-to-r from-yellow-50 to-yellow-100 flex items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-8 md:py-0">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
+            <div className="space-y-4 md:space-y-6 text-center lg:text-left">
+              <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold text-gray-800 leading-tight">
                 Exquisite
                 <span className="text-yellow-600"> Jewelry</span>
                 <br />
                 Collection
               </h1>
-              <p className="text-xl text-gray-600 leading-relaxed">
+              <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto lg:mx-0">
                 Discover our carefully curated selection of premium jewelry pieces. 
                 From engagement rings to statement necklaces, find the perfect piece 
                 for every special moment.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                 <Link
                   href="/products"
-                  className="inline-flex items-center justify-center px-8 py-3 bg-yellow-600 text-white font-semibold rounded-md hover:bg-yellow-700 transition-colors"
+                  className="inline-flex items-center justify-center px-6 md:px-8 py-3 bg-yellow-600 text-white font-semibold rounded-md hover:bg-yellow-700 transition-colors"
                 >
                   Shop Now
                   <ArrowRight className="ml-2" size={20} />
                 </Link>
                 <Link
                   href="/about"
-                  className="inline-flex items-center justify-center px-8 py-3 border-2 border-yellow-600 text-yellow-600 font-semibold rounded-md hover:bg-yellow-50 transition-colors"
+                  className="inline-flex items-center justify-center px-6 md:px-8 py-3 border-2 border-yellow-600 text-yellow-600 font-semibold rounded-md hover:bg-yellow-50 transition-colors"
                 >
                   Learn More
                 </Link>
               </div>
             </div>
-            <div className="relative">
-              <div className="relative w-full h-96 rounded-lg overflow-hidden shadow-2xl">
+            <div className="relative order-first lg:order-last">
+              <div className="relative w-full h-64 sm:h-80 md:h-96 rounded-lg overflow-hidden shadow-2xl">
                 <Image
                   src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&h=400&fit=crop"
                   alt="Luxury Jewelry Collection"
@@ -198,20 +198,20 @@ export default async function Home() {
       </section>
 
       {/* Newsletter Section */}
-      <section className="py-16 bg-gray-900 text-white">
+      <section className="py-12 md:py-16 bg-gray-900 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl lg:text-4xl font-bold mb-4">Stay Updated</h2>
-          <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4">Stay Updated</h2>
+          <p className="text-lg md:text-xl text-gray-300 mb-6 md:mb-8 max-w-2xl mx-auto">
             Subscribe to our newsletter and be the first to know about new collections, 
             exclusive offers, and jewelry care tips.
           </p>
-          <div className="max-w-md mx-auto flex gap-4">
+          <div className="max-w-md mx-auto flex flex-col sm:flex-row gap-3 md:gap-4">
             <input
               type="email"
               placeholder="Enter your email"
               className="flex-1 px-4 py-3 rounded-md text-gray-800 focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
-            <button className="px-6 py-3 bg-yellow-600 text-white font-semibold rounded-md hover:bg-yellow-700 transition-colors">
+            <button className="px-6 py-3 bg-yellow-600 text-white font-semibold rounded-md hover:bg-yellow-700 transition-colors whitespace-nowrap">
               Subscribe
             </button>
           </div>

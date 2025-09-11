@@ -77,9 +77,9 @@ export default function ContactPage() {
       </section>
 
       {/* Contact Info Cards */}
-      <section className="py-16">
+      <section className="py-12 md:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12 md:mb-16">
             {contactInfo.map((info, index) => (
               <div key={index} className="bg-white rounded-lg shadow-md p-6 text-center hover:shadow-lg transition-shadow">
                 <div className={`w-16 h-16 ${info.color.replace('text-', 'bg-').replace('-600', '-100')} rounded-full flex items-center justify-center mx-auto mb-4`}>
@@ -88,23 +88,23 @@ export default function ContactPage() {
                 <h3 className="text-xl font-semibold text-gray-800 mb-3">{info.title}</h3>
                 <div className="space-y-1">
                   {info.details.map((detail, idx) => (
-                    <p key={idx} className="text-gray-600">{detail}</p>
+                    <p key={idx} className="text-gray-600 text-sm md:text-base">{detail}</p>
                   ))}
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
             {/* Contact Form */}
-            <div className="bg-white rounded-lg shadow-md p-8">
+            <div className="bg-white rounded-lg shadow-md p-6 md:p-8">
               <div className="flex items-center mb-6">
                 <MessageCircle className="text-yellow-600 mr-3" size={24} />
-                <h2 className="text-2xl font-bold text-gray-800">Send us a Message</h2>
+                <h2 className="text-xl md:text-2xl font-bold text-gray-800">Send us a Message</h2>
               </div>
               
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
+                <div className="grid grid-cols-1 gap-4">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
                       Full Name *
@@ -137,7 +137,7 @@ export default function ContactPage() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4">
                   <div>
                     <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
                       Phone Number

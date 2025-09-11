@@ -58,11 +58,19 @@ export default function AddProduct() {
       const filteredImages = images.filter(img => img.trim() !== '');
       
       await apiClient.createProduct({
-        ...formData,
-        images: filteredImages,
+        name: formData.name,
         price: parseFloat(formData.price),
-        originalPrice: formData.originalPrice ? parseFloat(formData.originalPrice) : null,
-        stockQuantity: parseInt(formData.stockQuantity)
+        originalPrice: formData.originalPrice ? parseFloat(formData.originalPrice) : undefined,
+        description: formData.description,
+        category: formData.category,
+        images: filteredImages,
+        inStock: formData.inStock,
+        featured: formData.featured,
+        stockQuantity: parseInt(formData.stockQuantity),
+        material: formData.material,
+        weight: formData.weight,
+        size: formData.size,
+        gemstone: formData.gemstone
       });
 
       router.push('/admin/products');
@@ -75,29 +83,29 @@ export default function AddProduct() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 py-4 md:py-8">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 md:p-6 mb-4 md:mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-2 sm:space-y-0">
               <Link 
                 href="/admin/products"
-                className="flex items-center text-gray-600 hover:text-gray-900 transition-colors"
+                className="flex items-center text-gray-600 hover:text-gray-900 transition-colors w-fit"
               >
                 <ArrowLeft size={20} className="mr-2" />
                 Back to Products
               </Link>
-              <h1 className="text-2xl font-bold text-gray-900">Add New Product</h1>
+              <h1 className="text-xl md:text-2xl font-bold text-gray-900">Add New Product</h1>
             </div>
           </div>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 md:p-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
             {/* Basic Information */}
-            <div className="space-y-4">
+            <div className="space-y-4 md:space-y-6">
               <h3 className="text-lg font-semibold text-gray-900 border-b pb-2">Basic Information</h3>
               
               <div>
@@ -115,7 +123,7 @@ export default function AddProduct() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-1">
                     Price ($) *
@@ -187,7 +195,7 @@ export default function AddProduct() {
             </div>
 
             {/* Specifications */}
-            <div className="space-y-4">
+            <div className="space-y-4 md:space-y-6">
               <h3 className="text-lg font-semibold text-gray-900 border-b pb-2">Specifications</h3>
               
               <div>
@@ -205,7 +213,7 @@ export default function AddProduct() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="weight" className="block text-sm font-medium text-gray-700 mb-1">
                     Weight
@@ -300,11 +308,11 @@ export default function AddProduct() {
           </div>
 
           {/* Images Section */}
-          <div className="mt-8">
+          <div className="mt-6 md:mt-8">
             <h3 className="text-lg font-semibold text-gray-900 border-b pb-2 mb-4">Product Images</h3>
             <div className="space-y-3">
               {images.map((image, index) => (
-                <div key={index} className="flex items-center space-x-3">
+                <div key={index} className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
                   <input
                     type="url"
                     value={image}
@@ -316,7 +324,7 @@ export default function AddProduct() {
                     <button
                       type="button"
                       onClick={() => removeImageField(index)}
-                      className="p-2 text-red-600 hover:text-red-800 transition-colors"
+                      className="p-2 text-red-600 hover:text-red-800 transition-colors self-start sm:self-auto"
                     >
                       <X size={20} />
                     </button>
@@ -335,17 +343,17 @@ export default function AddProduct() {
           </div>
 
           {/* Submit Button */}
-          <div className="mt-8 flex justify-end space-x-4">
+          <div className="mt-6 md:mt-8 flex flex-col sm:flex-row sm:justify-end space-y-3 sm:space-y-0 sm:space-x-4">
             <Link
               href="/admin/products"
-              className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors"
+              className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors text-center"
             >
               Cancel
             </Link>
             <button
               type="submit"
               disabled={isLoading}
-              className="flex items-center px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 transition-colors"
+              className="flex items-center justify-center px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 transition-colors"
             >
               <Save size={20} className="mr-2" />
               {isLoading ? 'Creating...' : 'Create Product'}

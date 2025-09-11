@@ -130,18 +130,18 @@ export default function AdminDashboard() {
                 <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center">
                   <span className="text-white font-bold text-sm">J</span>
                 </div>
-                <span className="text-xl font-bold text-gray-800">Jwelary Admin</span>
+                <span className="text-lg md:text-xl font-bold text-gray-800">Jwelary Admin</span>
               </Link>
             </div>
             
-            <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-600">Welcome, {user.name}</span>
+            <div className="flex items-center space-x-2 md:space-x-4">
+              <span className="text-xs md:text-sm text-gray-600 hidden sm:inline">Welcome, {user.name}</span>
               <button
                 onClick={handleLogout}
-                className="flex items-center space-x-2 px-3 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                className="flex items-center space-x-1 md:space-x-2 px-2 md:px-3 py-2 text-gray-600 hover:text-gray-800 transition-colors"
               >
                 <LogOut size={16} />
-                <span>Logout</span>
+                <span className="hidden sm:inline">Logout</span>
               </button>
             </div>
           </div>
@@ -202,14 +202,14 @@ export default function AdminDashboard() {
 
         {/* Quick Actions */}
         <div className="bg-white rounded-lg shadow mb-8">
-          <div className="px-6 py-4 border-b border-gray-200">
+          <div className="px-4 md:px-6 py-4 border-b border-gray-200">
             <h2 className="text-lg font-semibold text-gray-900">Quick Actions</h2>
           </div>
-          <div className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="p-4 md:p-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <Link
                 href="/admin/products/new"
-                className="flex items-center justify-center space-x-2 bg-yellow-600 text-white px-4 py-3 rounded-md hover:bg-yellow-700 transition-colors"
+                className="flex items-center justify-center space-x-2 bg-yellow-600 text-white px-4 py-3 rounded-md hover:bg-yellow-700 transition-colors text-sm md:text-base"
               >
                 <Plus size={20} />
                 <span>Add New Product</span>
@@ -217,7 +217,7 @@ export default function AdminDashboard() {
               
               <Link
                 href="/admin/products"
-                className="flex items-center justify-center space-x-2 bg-blue-600 text-white px-4 py-3 rounded-md hover:bg-blue-700 transition-colors"
+                className="flex items-center justify-center space-x-2 bg-blue-600 text-white px-4 py-3 rounded-md hover:bg-blue-700 transition-colors text-sm md:text-base"
               >
                 <Package size={20} />
                 <span>Manage Products</span>
@@ -225,7 +225,7 @@ export default function AdminDashboard() {
               
               <Link
                 href="/admin/orders"
-                className="flex items-center justify-center space-x-2 bg-green-600 text-white px-4 py-3 rounded-md hover:bg-green-700 transition-colors"
+                className="flex items-center justify-center space-x-2 bg-green-600 text-white px-4 py-3 rounded-md hover:bg-green-700 transition-colors text-sm md:text-base"
               >
                 <ShoppingCart size={20} />
                 <span>View Orders</span>
@@ -236,7 +236,7 @@ export default function AdminDashboard() {
 
         {/* Recent Products */}
         <div className="bg-white rounded-lg shadow">
-          <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+          <div className="px-4 md:px-6 py-4 border-b border-gray-200 flex justify-between items-center">
             <h2 className="text-lg font-semibold text-gray-900">Recent Products</h2>
             <Link
               href="/admin/products"
@@ -245,7 +245,60 @@ export default function AdminDashboard() {
               View All
             </Link>
           </div>
-          <div className="overflow-x-auto">
+          
+          {/* Mobile Cards View */}
+          <div className="block md:hidden">
+            <div className="divide-y divide-gray-200">
+              {products.map((product) => (
+                <div key={product.id} className="p-4 space-y-3">
+                  <div className="flex justify-between items-start">
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm font-medium text-gray-900 truncate">{product.name}</div>
+                      <div className="text-sm text-gray-500 capitalize">{product.category}</div>
+                    </div>
+                    <div className="flex space-x-2 ml-2">
+                      <Link
+                        href={`/products/${product.id}`}
+                        className="text-blue-600 hover:text-blue-900"
+                      >
+                        <Eye size={16} />
+                      </Link>
+                      <Link
+                        href={`/admin/products/${product.id}/edit`}
+                        className="text-yellow-600 hover:text-yellow-900"
+                      >
+                        <Edit size={16} />
+                      </Link>
+                      <button
+                        onClick={() => deleteProduct(product.id)}
+                        className="text-red-600 hover:text-red-900"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <div className="text-sm text-gray-900">${product.price}</div>
+                    <div className="flex items-center space-x-3">
+                      <div className={`text-sm ${product.stockQuantity < 5 ? 'text-red-600' : 'text-gray-900'}`}>
+                        Stock: {product.stockQuantity}
+                      </div>
+                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                        product.inStock 
+                          ? 'bg-green-100 text-green-800' 
+                          : 'bg-red-100 text-red-800'
+                      }`}>
+                        {product.inStock ? 'In Stock' : 'Out of Stock'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Desktop Table View */}
+          <div className="hidden md:block overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>

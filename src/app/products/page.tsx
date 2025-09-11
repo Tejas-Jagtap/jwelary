@@ -81,10 +81,10 @@ export default function ProductsPage() {
         </div>
 
         {/* Filters and Search */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
-          <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
+        <div className="bg-white rounded-lg shadow-sm p-4 md:p-6 mb-8">
+          <div className="flex flex-col space-y-4">
             {/* Search */}
-            <div className="relative flex-1 max-w-md">
+            <div className="relative w-full">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
               <input
                 type="text"
@@ -95,14 +95,14 @@ export default function ProductsPage() {
               />
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 items-center">
+            <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
               {/* Category Filter */}
-              <div className="flex items-center space-x-2">
-                <Filter size={20} className="text-gray-500" />
+              <div className="flex items-center space-x-2 flex-1">
+                <Filter size={20} className="text-gray-500 hidden sm:block" />
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
                 >
                   <option value="all">All Categories</option>
                   {categories.map((category) => (
@@ -117,7 +117,7 @@ export default function ProductsPage() {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                className="w-full sm:w-auto px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
               >
                 <option value="name">Sort by Name</option>
                 <option value="price-low">Price: Low to High</option>
@@ -128,15 +128,15 @@ export default function ProductsPage() {
               <div className="flex border border-gray-300 rounded-md overflow-hidden">
                 <button
                   onClick={() => setViewMode('grid')}
-                  className={`p-2 ${viewMode === 'grid' ? 'bg-yellow-500 text-white' : 'bg-white text-gray-500'}`}
+                  className={`flex-1 sm:flex-none p-2 ${viewMode === 'grid' ? 'bg-yellow-500 text-white' : 'bg-white text-gray-500'}`}
                 >
-                  <Grid size={20} />
+                  <Grid size={20} className="mx-auto" />
                 </button>
                 <button
                   onClick={() => setViewMode('list')}
-                  className={`p-2 ${viewMode === 'list' ? 'bg-yellow-500 text-white' : 'bg-white text-gray-500'}`}
+                  className={`flex-1 sm:flex-none p-2 ${viewMode === 'list' ? 'bg-yellow-500 text-white' : 'bg-white text-gray-500'}`}
                 >
-                  <List size={20} />
+                  <List size={20} className="mx-auto" />
                 </button>
               </div>
             </div>

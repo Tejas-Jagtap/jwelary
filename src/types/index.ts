@@ -8,6 +8,11 @@ export interface Product {
   images: string[];
   inStock: boolean;
   featured: boolean;
+  stockQuantity?: number;
+  material?: string;
+  weight?: string;
+  size?: string;
+  gemstone?: string;
   specifications: {
     material: string;
     weight: string;

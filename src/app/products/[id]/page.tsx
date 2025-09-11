@@ -103,7 +103,7 @@ export default function ProductDetailPage() {
           </ol>
         </nav>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 mb-12 md:mb-16">
           {/* Product Images */}
           <div className="space-y-4">
             <div className="relative aspect-square rounded-lg overflow-hidden bg-gray-100">
@@ -117,13 +117,13 @@ export default function ProductDetailPage() {
                 <>
                   <button
                     onClick={prevImage}
-                    className="absolute left-4 top-1/2 transform -translate-y-1/2 p-2 bg-white bg-opacity-80 rounded-full shadow-md hover:bg-opacity-100 transition-all"
+                    className="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 p-2 bg-white bg-opacity-80 rounded-full shadow-md hover:bg-opacity-100 transition-all"
                   >
                     <ChevronLeft size={20} />
                   </button>
                   <button
                     onClick={nextImage}
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 p-2 bg-white bg-opacity-80 rounded-full shadow-md hover:bg-opacity-100 transition-all"
+                    className="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 p-2 bg-white bg-opacity-80 rounded-full shadow-md hover:bg-opacity-100 transition-all"
                   >
                     <ChevronRight size={20} />
                   </button>
@@ -132,12 +132,12 @@ export default function ProductDetailPage() {
             </div>
             
             {product.images.length > 1 && (
-              <div className="flex space-x-2 overflow-x-auto">
+              <div className="flex space-x-2 overflow-x-auto pb-2">
                 {product.images.map((image: string, index: number) => (
                   <button
                     key={index}
                     onClick={() => setSelectedImageIndex(index)}
-                    className={`relative w-20 h-20 rounded-md overflow-hidden flex-shrink-0 ${
+                    className={`relative w-16 h-16 md:w-20 md:h-20 rounded-md overflow-hidden flex-shrink-0 ${
                       index === selectedImageIndex ? 'ring-2 ring-yellow-500' : ''
                     }`}
                   >
@@ -154,25 +154,25 @@ export default function ProductDetailPage() {
           </div>
 
           {/* Product Info */}
-          <div className="space-y-6">
+          <div className="space-y-4 md:space-y-6">
             <div>
-              <h1 className="text-3xl lg:text-4xl font-bold text-gray-800 mb-4">
+              <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 mb-3 md:mb-4">
                 {product.name}
               </h1>
               
-              <div className="flex items-center space-x-4 mb-4">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 mb-4 space-y-2 sm:space-y-0">
                 <div className="flex items-center">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={20} className="text-yellow-400 fill-current" />
+                    <Star key={i} size={18} className="text-yellow-400 fill-current" />
                   ))}
                   <span className="ml-2 text-sm text-gray-600">(24 reviews)</span>
                 </div>
               </div>
 
-              <div className="flex items-center space-x-4 mb-6">
-                <span className="text-3xl font-bold text-gray-800">${product.price}</span>
+              <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 mb-4 md:mb-6 space-y-2 sm:space-y-0">
+                <span className="text-2xl md:text-3xl font-bold text-gray-800">${product.price}</span>
                 {product.originalPrice && (
-                  <span className="text-xl text-gray-500 line-through">${product.originalPrice}</span>
+                  <span className="text-lg md:text-xl text-gray-500 line-through">${product.originalPrice}</span>
                 )}
                 {product.originalPrice && (
                   <span className="bg-red-100 text-red-800 px-2 py-1 rounded-md text-sm font-medium">
@@ -181,15 +181,15 @@ export default function ProductDetailPage() {
                 )}
               </div>
 
-              <p className="text-gray-600 leading-relaxed mb-6">
+              <p className="text-gray-600 leading-relaxed mb-4 md:mb-6">
                 {product.description}
               </p>
             </div>
 
             {/* Specifications */}
-            <div className="border-t border-gray-200 pt-6">
+            <div className="border-t border-gray-200 pt-4 md:pt-6">
               <h3 className="text-lg font-semibold text-gray-800 mb-4">Specifications</h3>
-              <dl className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <dl className="grid grid-cols-2 gap-3 md:gap-4">
                 <div>
                   <dt className="text-sm font-medium text-gray-500">Material</dt>
                   <dd className="text-sm text-gray-800">{product.specifications.material}</dd>
@@ -212,9 +212,9 @@ export default function ProductDetailPage() {
             </div>
 
             {/* Add to Cart */}
-            <div className="border-t border-gray-200 pt-6">
-              <div className="flex items-center space-x-4 mb-6">
-                <div className="flex items-center border border-gray-300 rounded-md">
+            <div className="border-t border-gray-200 pt-4 md:pt-6">
+              <div className="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-4 mb-6">
+                <div className="flex items-center border border-gray-300 rounded-md w-fit">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                     className="px-3 py-2 text-gray-600 hover:text-gray-800"
@@ -242,7 +242,7 @@ export default function ProductDetailPage() {
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col space-y-3 sm:space-y-0 sm:flex-row sm:gap-4">
                 <button
                   disabled={!product.inStock}
                   className={`flex-1 flex items-center justify-center space-x-2 px-6 py-3 rounded-md font-semibold transition-colors ${
@@ -257,24 +257,25 @@ export default function ProductDetailPage() {
                 
                 <button className="px-6 py-3 border-2 border-yellow-600 text-yellow-600 rounded-md font-semibold hover:bg-yellow-50 transition-colors flex items-center justify-center">
                   <Heart size={20} className="mr-2" />
-                  Add to Wishlist
+                  <span className="hidden sm:inline">Add to Wishlist</span>
+                  <span className="sm:hidden">Wishlist</span>
                 </button>
               </div>
             </div>
 
             {/* Features */}
-            <div className="border-t border-gray-200 pt-6">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="border-t border-gray-200 pt-4 md:pt-6">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
                 <div className="flex items-center space-x-2 text-sm text-gray-600">
-                  <Shield size={16} className="text-yellow-600" />
+                  <Shield size={16} className="text-yellow-600 flex-shrink-0" />
                   <span>Lifetime Warranty</span>
                 </div>
                 <div className="flex items-center space-x-2 text-sm text-gray-600">
-                  <Truck size={16} className="text-yellow-600" />
+                  <Truck size={16} className="text-yellow-600 flex-shrink-0" />
                   <span>Free Shipping</span>
                 </div>
                 <div className="flex items-center space-x-2 text-sm text-gray-600">
-                  <RotateCcw size={16} className="text-yellow-600" />
+                  <RotateCcw size={16} className="text-yellow-600 flex-shrink-0" />
                   <span>30-Day Returns</span>
                 </div>
               </div>
