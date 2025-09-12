@@ -2,10 +2,12 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { Menu, X, ShoppingBag, Search, User } from 'lucide-react';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   const navLinks = [
     { href: '/', label: 'Home' },
@@ -13,6 +15,13 @@ const Navbar = () => {
     { href: '/about', label: 'About' },
     { href: '/contact', label: 'Contact' },
   ];
+
+  const isActiveLink = (href: string) => {
+    if (href === '/') {
+      return pathname === '/';
+    }
+    return pathname.startsWith(href);
+  };
 
   return (
     <nav className="bg-white shadow-lg sticky top-0 z-50">
@@ -32,9 +41,16 @@ const Navbar = () => {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-gray-600 hover:text-yellow-600 transition-colors duration-200 font-medium"
+                className={`transition-colors duration-200 font-medium relative ${
+                  isActiveLink(link.href)
+                    ? 'text-yellow-600'
+                    : 'text-gray-600 hover:text-yellow-600'
+                }`}
               >
                 {link.label}
+                {isActiveLink(link.href) && (
+                  <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-yellow-600 rounded-full"></span>
+                )}
               </Link>
             ))}
           </div>
@@ -74,7 +90,11 @@ const Navbar = () => {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="block px-3 py-2 text-gray-600 hover:text-yellow-600 transition-colors duration-200 font-medium"
+                  className={`block px-3 py-2 transition-colors duration-200 font-medium rounded-md ${
+                    isActiveLink(link.href)
+                      ? 'text-yellow-600 bg-yellow-50'
+                      : 'text-gray-600 hover:text-yellow-600 hover:bg-gray-50'
+                  }`}
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {link.label}

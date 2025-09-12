@@ -222,7 +222,7 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              {/* FAQ */}
+              {/* FAQ
               <div className="bg-white rounded-lg shadow-md p-8">
                 <h3 className="text-xl font-semibold text-gray-800 mb-6">Quick Answers</h3>
                 <div className="space-y-4">
@@ -243,13 +243,13 @@ export default function ContactPage() {
                     <p className="text-gray-600 text-sm">Custom pieces typically take 4-6 weeks, depending on complexity and materials.</p>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Newsletter Section */}
+      {/* Newsletter Section
       <section className="py-16 bg-gray-900 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold mb-4">Stay Connected</h2>
@@ -268,7 +268,7 @@ export default function ContactPage() {
             </button>
           </div>
         </div>
-      </section>
+      </section> */}
     </div>
   );
 }
