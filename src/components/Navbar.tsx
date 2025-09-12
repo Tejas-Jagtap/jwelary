@@ -1,13 +1,28 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { Menu, X, ShoppingBag, Search, User } from 'lucide-react';
+import SearchModal from './SearchModal';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const pathname = usePathname();
+
+  // Keyboard shortcut for search (Ctrl/Cmd + K)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setIsSearchOpen(true);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   const navLinks = [
     { href: '/', label: 'Home' },
@@ -57,7 +72,10 @@ const Navbar = () => {
 
           {/* Right side icons */}
           <div className="hidden md:flex items-center space-x-4">
-            <button className="p-2 text-gray-600 hover:text-yellow-600 transition-colors">
+            <button 
+              onClick={() => setIsSearchOpen(true)}
+              className="flex items-center p-2 text-gray-600 hover:text-yellow-600 transition-colors group"
+            >
               <Search size={20} />
             </button>
             <button className="p-2 text-gray-600 hover:text-yellow-600 transition-colors">
@@ -101,7 +119,10 @@ const Navbar = () => {
                 </Link>
               ))}
               <div className="flex items-center space-x-4 px-3 py-2">
-                <button className="p-2 text-gray-600 hover:text-yellow-600 transition-colors">
+                <button 
+                  onClick={() => setIsSearchOpen(true)}
+                  className="p-2 text-gray-600 hover:text-yellow-600 transition-colors"
+                >
                   <Search size={20} />
                 </button>
                 <button className="p-2 text-gray-600 hover:text-yellow-600 transition-colors">
@@ -118,6 +139,12 @@ const Navbar = () => {
           </div>
         )}
       </div>
+      
+      {/* Search Modal */}
+      <SearchModal 
+        isOpen={isSearchOpen} 
+        onClose={() => setIsSearchOpen(false)} 
+      />
     </nav>
   );
 };
