@@ -197,7 +197,7 @@ export default function EditProduct() {
                   value={formData.name}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 placeholder-gray-500 bg-white"
                 />
               </div>
 
@@ -215,7 +215,7 @@ export default function EditProduct() {
                     step="0.01"
                     min="0"
                     required
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 placeholder-gray-500 bg-white"
                   />
                 </div>
                 <div>
@@ -230,7 +230,7 @@ export default function EditProduct() {
                     onChange={handleInputChange}
                     step="0.01"
                     min="0"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 placeholder-gray-500 bg-white"
                   />
                 </div>
               </div>
@@ -245,7 +245,7 @@ export default function EditProduct() {
                   value={formData.category}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 placeholder-gray-500 bg-white"
                 >
                   <option value="">Select Category</option>
                   <option value="rings">Rings</option>
@@ -267,7 +267,7 @@ export default function EditProduct() {
                   onChange={handleInputChange}
                   rows={4}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 placeholder-gray-500 bg-white"
                 />
               </div>
             </div>
@@ -287,7 +287,7 @@ export default function EditProduct() {
                   value={formData.material}
                   onChange={handleInputChange}
                   placeholder="e.g., 14K Gold, Sterling Silver"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 placeholder-gray-500 bg-white"
                 />
               </div>
 
@@ -303,7 +303,7 @@ export default function EditProduct() {
                     value={formData.weight}
                     onChange={handleInputChange}
                     placeholder="e.g., 2.5g"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 placeholder-gray-500 bg-white"
                   />
                 </div>
                 <div>
@@ -317,7 +317,7 @@ export default function EditProduct() {
                     value={formData.size}
                     onChange={handleInputChange}
                     placeholder="e.g., 7, Medium"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 placeholder-gray-500 bg-white"
                   />
                 </div>
               </div>
@@ -333,7 +333,7 @@ export default function EditProduct() {
                   value={formData.gemstone}
                   onChange={handleInputChange}
                   placeholder="e.g., Diamond, Ruby, Sapphire"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 placeholder-gray-500 bg-white"
                 />
               </div>
 
@@ -349,7 +349,7 @@ export default function EditProduct() {
                   onChange={handleInputChange}
                   min="0"
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 placeholder-gray-500 bg-white"
                 />
               </div>
 

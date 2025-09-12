@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContextBackend';
 import { apiClient } from '@/lib/apiClient';
+import { Product } from '@/types';
 import Link from 'next/link';
 import { 
   Plus,
@@ -15,18 +16,6 @@ import {
   Filter,
   LogOut
 } from 'lucide-react';
-
-interface Product {
-  id: string;
-  name: string;
-  price: number;
-  originalPrice?: number;
-  stockQuantity: number;
-  inStock: boolean;
-  featured: boolean;
-  category: string;
-  createdAt: string;
-}
 
 export default function AdminProductsPage() {
   const { user, logout, loading } = useAuth();
@@ -182,7 +171,7 @@ export default function AdminProductsPage() {
                 placeholder="Search products..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent text-gray-900 placeholder-gray-500"
               />
             </div>
 
@@ -192,7 +181,7 @@ export default function AdminProductsPage() {
               <select
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
-                className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 text-gray-900 bg-white"
               >
                 {categories.map((category) => (
                   <option key={category.id} value={category.id}>
@@ -258,9 +247,9 @@ export default function AdminProductsPage() {
                       )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className={`text-sm ${product.stockQuantity < 5 ? 'text-red-600 font-medium' : 'text-gray-900'}`}>
-                        {product.stockQuantity}
-                        {product.stockQuantity < 5 && <span className="text-xs text-red-500 block">Low Stock</span>}
+                      <div className={`text-sm ${(product.stockQuantity ?? 0) < 5 ? 'text-red-600 font-medium' : 'text-gray-900'}`}>
+                        {product.stockQuantity ?? 'N/A'}
+                        {(product.stockQuantity ?? 0) < 5 && <span className="text-xs text-red-500 block">Low Stock</span>}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
