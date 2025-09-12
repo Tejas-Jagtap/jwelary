@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { prisma } from '@/lib/prisma';
-import { hashPassword, verifyPassword, generateToken } from '@/lib/auth';
+import { hashPassword, verifyPassword, generateToken, generateRefreshToken, verifyToken } from '@/lib/auth';
 import { AuthRequest } from '@/middleware/auth';
 
 export const login = async (req: Request, res: Response) => {
@@ -24,9 +24,23 @@ export const login = async (req: Request, res: Response) => {
       email: user.email,
       name: user.name,
       role: user.role
+    }, '2h'); // 2 hour access token
+
+    const refreshToken = generateRefreshToken({
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      role: user.role
     });
 
     res.cookie('auth-token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 2 * 60 * 60 * 1000 // 2 hours
+    });
+
+    res.cookie('refresh-token', refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
@@ -50,6 +64,7 @@ export const login = async (req: Request, res: Response) => {
 
 export const logout = async (req: Request, res: Response) => {
   res.clearCookie('auth-token');
+  res.clearCookie('refresh-token');
   res.json({ message: 'Logged out successfully' });
 };
 
@@ -81,6 +96,58 @@ export const getMe = async (req: AuthRequest, res: Response) => {
   }
 };
 
+export const refreshToken = async (req: Request, res: Response) => {
+  try {
+    const refreshToken = req.cookies['refresh-token'];
+    
+    if (!refreshToken) {
+      return res.status(401).json({ error: 'Refresh token not found' });
+    }
+
+    const payload = verifyToken(refreshToken);
+    
+    if (!payload) {
+      return res.status(401).json({ error: 'Invalid refresh token' });
+    }
+
+    // Verify user still exists
+    const user = await prisma.user.findUnique({
+      where: { id: payload.id }
+    });
+
+    if (!user) {
+      return res.status(401).json({ error: 'User not found' });
+    }
+
+    // Generate new access token
+    const newToken = generateToken({
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      role: user.role
+    }, '2h');
+
+    res.cookie('auth-token', newToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 2 * 60 * 60 * 1000 // 2 hours
+    });
+
+    res.json({
+      message: 'Token refreshed successfully',
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role
+      }
+    });
+  } catch (error) {
+    console.error('Refresh token error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
 export const register = async (req: Request, res: Response) => {
   try {
     const { email, password, name } = req.body;

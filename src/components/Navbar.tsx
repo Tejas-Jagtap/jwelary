@@ -24,6 +24,69 @@ const Navbar = () => {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as Element;
+      if (isMenuOpen && !target.closest('nav')) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isMenuOpen]);
+
+  // Close mobile menu when search opens
+  useEffect(() => {
+    if (isSearchOpen) {
+      setIsMenuOpen(false);
+    }
+  }, [isSearchOpen]);
+
+  // Close mobile menu when user scrolls
+  useEffect(() => {
+    let scrollTimeout: NodeJS.Timeout;
+    
+    const handleScroll = () => {
+      // Clear any existing timeout
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+      }
+      
+      // Set a small delay to avoid immediate closing
+      scrollTimeout = setTimeout(() => {
+        if (isMenuOpen) {
+          setIsMenuOpen(false);
+        }
+      }, 100);
+    };
+
+    if (isMenuOpen) {
+      // Add a small delay before starting to listen for scroll events
+      const delayTimeout = setTimeout(() => {
+        window.addEventListener('scroll', handleScroll, { passive: true });
+      }, 200);
+
+      return () => {
+        clearTimeout(delayTimeout);
+        clearTimeout(scrollTimeout);
+        window.removeEventListener('scroll', handleScroll);
+      };
+    }
+
+    return () => {
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+      }
+    };
+  }, [isMenuOpen]);
+
   const navLinks = [
     { href: '/', label: 'Home' },
     { href: '/products', label: 'Products' },
@@ -120,7 +183,10 @@ const Navbar = () => {
               ))}
               <div className="flex items-center space-x-4 px-3 py-2">
                 <button 
-                  onClick={() => setIsSearchOpen(true)}
+                  onClick={() => {
+                    setIsSearchOpen(true);
+                    setIsMenuOpen(false);
+                  }}
                   className="p-2 text-gray-600 hover:text-yellow-600 transition-colors"
                 >
                   <Search size={20} />
