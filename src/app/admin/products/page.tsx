@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/contexts/AuthContextBackend';
-import { apiClient } from '@/lib/apiClient';
-import { Product } from '@/types';
-import Link from 'next/link';
-import { 
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/AuthContextBackend";
+import { apiClient } from "@/lib/apiClient";
+import { Product } from "@/types";
+import Link from "next/link";
+import {
   Plus,
   Search,
   Edit,
@@ -14,8 +14,8 @@ import {
   Eye,
   Package,
   Filter,
-  LogOut
-} from 'lucide-react';
+  LogOut,
+} from "lucide-react";
 
 export default function AdminProductsPage() {
   const { user, logout, loading } = useAuth();
@@ -23,24 +23,24 @@ export default function AdminProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('all');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("all");
 
   const categories = [
-    { id: 'all', name: 'All Categories' },
-    { id: 'rings', name: 'Rings' },
-    { id: 'necklaces', name: 'Necklaces' },
-    { id: 'earrings', name: 'Earrings' },
-    { id: 'bracelets', name: 'Bracelets' }
+    { id: "all", name: "All Categories" },
+    { id: "rings", name: "Rings" },
+    { id: "necklaces", name: "Necklaces" },
+    { id: "earrings", name: "Earrings" },
+    { id: "bracelets", name: "Bracelets" },
   ];
 
   useEffect(() => {
-    if (!loading && (!user || user.role !== 'ADMIN')) {
-      router.push('/admin/login');
+    if (!loading && (!user || user.role !== "ADMIN")) {
+      router.push("/admin/login");
       return;
     }
 
-    if (user && user.role === 'ADMIN') {
+    if (user && user.role === "ADMIN") {
       fetchProducts();
     }
   }, [user, loading, router]);
@@ -51,10 +51,10 @@ export default function AdminProductsPage() {
 
   const fetchProducts = async () => {
     try {
-      const productsData = await apiClient.getProducts() as Product[];
+      const productsData = (await apiClient.getProducts()) as Product[];
       setProducts(productsData);
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error("Error fetching products:", error);
     } finally {
       setLoadingProducts(false);
     }
@@ -63,12 +63,14 @@ export default function AdminProductsPage() {
   const filterProducts = () => {
     let filtered = products;
 
-    if (categoryFilter !== 'all') {
-      filtered = filtered.filter(product => product.category === categoryFilter);
+    if (categoryFilter !== "all") {
+      filtered = filtered.filter(
+        (product) => product.category === categoryFilter
+      );
     }
 
     if (searchQuery) {
-      filtered = filtered.filter(product =>
+      filtered = filtered.filter((product) =>
         product.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
@@ -77,20 +79,20 @@ export default function AdminProductsPage() {
   };
 
   const deleteProduct = async (productId: string) => {
-    if (!confirm('Are you sure you want to delete this product?')) return;
+    if (!confirm("Are you sure you want to delete this product?")) return;
 
     try {
       await apiClient.deleteProduct(productId);
       fetchProducts();
     } catch (error) {
-      console.error('Error deleting product:', error);
-      alert('Error deleting product');
+      console.error("Error deleting product:", error);
+      alert("Error deleting product");
     }
   };
 
   const handleLogout = async () => {
     await logout();
-    router.push('/admin/login');
+    router.push("/admin/login");
   };
 
   if (loading || loadingProducts) {
@@ -101,7 +103,7 @@ export default function AdminProductsPage() {
     );
   }
 
-  if (!user || user.role !== 'ADMIN') {
+  if (!user || user.role !== "ADMIN") {
     return null;
   }
 
@@ -110,27 +112,31 @@ export default function AdminProductsPage() {
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-4">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center h-auto sm:h-16 py-3 sm:py-0">
+            <div className="flex items-center space-x-4 mb-3 sm:mb-0">
               <Link href="/admin" className="flex items-center space-x-2">
                 <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center">
                   <span className="text-white font-bold text-sm">J</span>
                 </div>
-                <span className="text-xl font-bold text-gray-800">Jwelary Admin</span>
+                <span className="text-lg sm:text-xl font-heading font-bold text-gray-800">
+                  Jwelary Admin
+                </span>
               </Link>
             </div>
-            
-            <div className="flex items-center space-x-4">
+
+            <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
               <Link
                 href="/admin"
-                className="text-gray-600 hover:text-gray-800 transition-colors"
+                className="text-gray-600 hover:text-gray-800 transition-colors text-sm sm:text-base"
               >
                 Dashboard
               </Link>
-              <span className="text-sm text-gray-600">Welcome, {user.name}</span>
+              <span className="text-xs sm:text-sm text-gray-600">
+                Welcome, {user.name}
+              </span>
               <button
                 onClick={handleLogout}
-                className="flex items-center space-x-2 px-3 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                className="flex items-center space-x-2 px-3 py-2 text-gray-600 hover:text-gray-800 transition-colors text-sm"
               >
                 <LogOut size={16} />
                 <span>Logout</span>
@@ -142,17 +148,19 @@ export default function AdminProductsPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Page Header */}
-        <div className="mb-8">
-          <div className="flex justify-between items-center">
+        <div className="mb-6 sm:mb-8">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-4 sm:space-y-0">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Products</h1>
-              <p className="mt-2 text-gray-600">
+              <h1 className="text-2xl sm:text-3xl font-heading font-bold text-gray-900">
+                Products
+              </h1>
+              <p className="mt-2 text-gray-600 text-sm sm:text-base">
                 Manage your jewelry collection
               </p>
             </div>
             <Link
               href="/admin/products/new"
-              className="inline-flex items-center px-4 py-2 bg-yellow-600 text-white font-medium rounded-md hover:bg-yellow-700 transition-colors"
+              className="inline-flex items-center justify-center px-4 py-2 bg-yellow-600 text-white font-medium rounded-md hover:bg-yellow-700 transition-colors w-full sm:w-auto"
             >
               <Plus size={20} className="mr-2" />
               Add Product
@@ -161,11 +169,14 @@ export default function AdminProductsPage() {
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-          <div className="flex flex-col lg:flex-row gap-4">
+        <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 mb-4 sm:mb-6">
+          <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:gap-4">
             {/* Search */}
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+              <Search
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                size={20}
+              />
               <input
                 type="text"
                 placeholder="Search products..."
@@ -176,32 +187,132 @@ export default function AdminProductsPage() {
             </div>
 
             {/* Category Filter */}
-            <div className="flex items-center space-x-2">
-              <Filter size={20} className="text-gray-500" />
-              <select
-                value={categoryFilter}
-                onChange={(e) => setCategoryFilter(e.target.value)}
-                className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 text-gray-900 bg-white"
-              >
-                {categories.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
-                  </option>
-                ))}
-              </select>
+            <div className="w-full sm:w-auto sm:flex-shrink-0">
+              <div className="flex items-center space-x-2">
+                <Filter
+                  size={20}
+                  className="text-gray-500 hidden sm:block flex-shrink-0"
+                />
+                <select
+                  value={categoryFilter}
+                  onChange={(e) => setCategoryFilter(e.target.value)}
+                  className="flex-1 sm:flex-none w-full sm:w-auto sm:min-w-[160px] px-3 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 text-gray-900 bg-white text-sm sm:text-base appearance-none cursor-pointer"
+                >
+                  {categories.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Products Table */}
         <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-200">
+          <div className="px-4 sm:px-6 py-4 border-b border-gray-200">
             <h3 className="text-lg font-medium text-gray-900">
               Products ({filteredProducts.length})
             </h3>
           </div>
-          
-          <div className="overflow-x-auto">
+
+          {/* Mobile Card View */}
+          <div className="block md:hidden">
+            {filteredProducts.map((product) => (
+              <div
+                key={product.id}
+                className="border-b border-gray-200 p-4 hover:bg-gray-50"
+              >
+                <div className="flex justify-between items-start mb-3">
+                  <div className="flex-1">
+                    <h4 className="font-medium text-gray-900 mb-1">
+                      {product.name}
+                    </h4>
+                    <p className="text-sm text-gray-500">ID: {product.id}</p>
+                  </div>
+                  <div className="flex space-x-1 ml-2">
+                    <Link
+                      href={`/products/${product.id}`}
+                      className="text-blue-600 hover:text-blue-900 p-2"
+                      title="View Product"
+                    >
+                      <Eye size={18} />
+                    </Link>
+                    <Link
+                      href={`/admin/products/${product.id}/edit`}
+                      className="text-yellow-600 hover:text-yellow-900 p-2"
+                      title="Edit Product"
+                    >
+                      <Edit size={18} />
+                    </Link>
+                    <button
+                      onClick={() => deleteProduct(product.id)}
+                      className="text-red-600 hover:text-red-900 p-2"
+                      title="Delete Product"
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3 text-sm">
+                  <div>
+                    <span className="text-gray-500">Category:</span>
+                    <span className="ml-1 inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800 capitalize">
+                      {product.category}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-gray-500">Price:</span>
+                    <span className="ml-1 font-medium text-gray-900">
+                      ${product.price}
+                    </span>
+                    {product.originalPrice && (
+                      <span className="ml-1 text-gray-500 line-through text-xs">
+                        ${product.originalPrice}
+                      </span>
+                    )}
+                  </div>
+                  <div>
+                    <span className="text-gray-500">Stock:</span>
+                    <span
+                      className={`ml-1 ${
+                        (product.stockQuantity ?? 0) < 5
+                          ? "text-red-600 font-medium"
+                          : "text-gray-900"
+                      }`}
+                    >
+                      {product.stockQuantity ?? "N/A"}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-gray-500">Status:</span>
+                    <span
+                      className={`ml-1 inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                        product.inStock
+                          ? "bg-green-100 text-green-800"
+                          : "bg-red-100 text-red-800"
+                      }`}
+                    >
+                      {product.inStock ? "In Stock" : "Out of Stock"}
+                    </span>
+                  </div>
+                </div>
+
+                {product.featured && (
+                  <div className="mt-2">
+                    <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                      Featured
+                    </span>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop Table View */}
+          <div className="hidden md:block overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
@@ -232,8 +343,12 @@ export default function AdminProductsPage() {
                 {filteredProducts.map((product) => (
                   <tr key={product.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">{product.name}</div>
-                      <div className="text-sm text-gray-500">ID: {product.id}</div>
+                      <div className="text-sm font-medium text-gray-900">
+                        {product.name}
+                      </div>
+                      <div className="text-sm text-gray-500">
+                        ID: {product.id}
+                      </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800 capitalize">
@@ -241,33 +356,51 @@ export default function AdminProductsPage() {
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">${product.price}</div>
+                      <div className="text-sm text-gray-900">
+                        ${product.price}
+                      </div>
                       {product.originalPrice && (
-                        <div className="text-sm text-gray-500 line-through">${product.originalPrice}</div>
+                        <div className="text-sm text-gray-500 line-through">
+                          ${product.originalPrice}
+                        </div>
                       )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className={`text-sm ${(product.stockQuantity ?? 0) < 5 ? 'text-red-600 font-medium' : 'text-gray-900'}`}>
-                        {product.stockQuantity ?? 'N/A'}
-                        {(product.stockQuantity ?? 0) < 5 && <span className="text-xs text-red-500 block">Low Stock</span>}
+                      <div
+                        className={`text-sm ${
+                          (product.stockQuantity ?? 0) < 5
+                            ? "text-red-600 font-medium"
+                            : "text-gray-900"
+                        }`}
+                      >
+                        {product.stockQuantity ?? "N/A"}
+                        {(product.stockQuantity ?? 0) < 5 && (
+                          <span className="text-xs text-red-500 block">
+                            Low Stock
+                          </span>
+                        )}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                        product.inStock 
-                          ? 'bg-green-100 text-green-800' 
-                          : 'bg-red-100 text-red-800'
-                      }`}>
-                        {product.inStock ? 'In Stock' : 'Out of Stock'}
+                      <span
+                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                          product.inStock
+                            ? "bg-green-100 text-green-800"
+                            : "bg-red-100 text-red-800"
+                        }`}
+                      >
+                        {product.inStock ? "In Stock" : "Out of Stock"}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                        product.featured 
-                          ? 'bg-yellow-100 text-yellow-800' 
-                          : 'bg-gray-100 text-gray-800'
-                      }`}>
-                        {product.featured ? 'Featured' : 'Regular'}
+                      <span
+                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                          product.featured
+                            ? "bg-yellow-100 text-yellow-800"
+                            : "bg-gray-100 text-gray-800"
+                        }`}
+                      >
+                        {product.featured ? "Featured" : "Regular"}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -302,16 +435,17 @@ export default function AdminProductsPage() {
           </div>
 
           {filteredProducts.length === 0 && (
-            <div className="text-center py-12">
+            <div className="text-center py-12 px-4">
               <Package size={48} className="mx-auto text-gray-400 mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No products found</h3>
-              <p className="text-gray-500 mb-4">
-                {searchQuery || categoryFilter !== 'all' 
-                  ? 'Try adjusting your search or filter criteria'
-                  : 'Get started by adding your first product'
-                }
+              <h3 className="text-lg font-medium text-gray-900 mb-2">
+                No products found
+              </h3>
+              <p className="text-gray-500 mb-4 text-sm sm:text-base">
+                {searchQuery || categoryFilter !== "all"
+                  ? "Try adjusting your search or filter criteria"
+                  : "Get started by adding your first product"}
               </p>
-              {!searchQuery && categoryFilter === 'all' && (
+              {!searchQuery && categoryFilter === "all" && (
                 <Link
                   href="/admin/products/new"
                   className="inline-flex items-center px-4 py-2 bg-yellow-600 text-white font-medium rounded-md hover:bg-yellow-700 transition-colors"

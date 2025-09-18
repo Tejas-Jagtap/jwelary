@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useParams } from 'next/navigation';
-import Link from 'next/link';
-import { ArrowLeft, Save, X, Plus, Loader } from 'lucide-react';
-import { apiClient } from '@/lib/apiClient';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
+import Link from "next/link";
+import { ArrowLeft, Save, X, Plus, Loader } from "lucide-react";
+import { apiClient } from "@/lib/apiClient";
 
 interface Product {
   id: string;
@@ -30,25 +30,25 @@ export default function EditProduct() {
   const router = useRouter();
   const params = useParams();
   const productId = params.id as string;
-  
+
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingProduct, setIsLoadingProduct] = useState(true);
   const [product, setProduct] = useState<Product | null>(null);
   const [formData, setFormData] = useState({
-    name: '',
-    price: '',
-    originalPrice: '',
-    description: '',
-    category: '',
+    name: "",
+    price: "",
+    originalPrice: "",
+    description: "",
+    category: "",
     inStock: true,
     featured: false,
-    stockQuantity: '',
-    material: '',
-    weight: '',
-    size: '',
-    gemstone: ''
+    stockQuantity: "",
+    material: "",
+    weight: "",
+    size: "",
+    gemstone: "",
   });
-  const [images, setImages] = useState<string[]>(['']);
+  const [images, setImages] = useState<string[]>([""]);
 
   useEffect(() => {
     if (productId) {
@@ -58,40 +58,45 @@ export default function EditProduct() {
 
   const fetchProduct = async () => {
     try {
-      const productData = await apiClient.getProduct(productId) as Product;
+      const productData = (await apiClient.getProduct(productId)) as Product;
       setProduct(productData);
-      
+
       // Populate form with existing data
       setFormData({
         name: productData.name,
         price: productData.price.toString(),
-        originalPrice: productData.originalPrice?.toString() || '',
+        originalPrice: productData.originalPrice?.toString() || "",
         description: productData.description,
         category: productData.category,
         inStock: productData.inStock,
         featured: productData.featured,
         stockQuantity: productData.stockQuantity.toString(),
-        material: productData.specifications?.material || '',
-        weight: productData.specifications?.weight || '',
-        size: productData.specifications?.size || '',
-        gemstone: productData.specifications?.gemstone || ''
+        material: productData.specifications?.material || "",
+        weight: productData.specifications?.weight || "",
+        size: productData.specifications?.size || "",
+        gemstone: productData.specifications?.gemstone || "",
       });
-      
-      setImages(productData.images.length > 0 ? productData.images : ['']);
+
+      setImages(productData.images.length > 0 ? productData.images : [""]);
     } catch (error) {
-      console.error('Error fetching product:', error);
-      alert('Failed to load product');
-      router.push('/admin/products');
+      console.error("Error fetching product:", error);
+      alert("Failed to load product");
+      router.push("/admin/products");
     } finally {
       setIsLoadingProduct(false);
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { name, value, type } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value
+      [name]:
+        type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
     }));
   };
 
@@ -102,7 +107,7 @@ export default function EditProduct() {
   };
 
   const addImageField = () => {
-    setImages([...images, '']);
+    setImages([...images, ""]);
   };
 
   const removeImageField = (index: number) => {
@@ -117,20 +122,22 @@ export default function EditProduct() {
     setIsLoading(true);
 
     try {
-      const filteredImages = images.filter(img => img.trim() !== '');
-      
+      const filteredImages = images.filter((img) => img.trim() !== "");
+
       await apiClient.updateProduct(productId, {
         ...formData,
         images: filteredImages,
         price: parseFloat(formData.price),
-        originalPrice: formData.originalPrice ? parseFloat(formData.originalPrice) : null,
-        stockQuantity: parseInt(formData.stockQuantity)
+        originalPrice: formData.originalPrice
+          ? parseFloat(formData.originalPrice)
+          : undefined,
+        stockQuantity: parseInt(formData.stockQuantity),
       });
 
-      router.push('/admin/products');
+      router.push("/admin/products");
     } catch (error) {
-      console.error('Error updating product:', error);
-      alert('Failed to update product');
+      console.error("Error updating product:", error);
+      alert("Failed to update product");
     } finally {
       setIsLoading(false);
     }
@@ -151,8 +158,13 @@ export default function EditProduct() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Product Not Found</h2>
-          <Link href="/admin/products" className="text-blue-600 hover:text-blue-800">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            Product Not Found
+          </h2>
+          <Link
+            href="/admin/products"
+            className="text-blue-600 hover:text-blue-800"
+          >
             Back to Products
           </Link>
         </div>
@@ -161,33 +173,43 @@ export default function EditProduct() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 py-4 md:py-8">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <Link 
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 md:p-6 mb-4 md:mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-2 sm:space-y-0">
+              <Link
                 href="/admin/products"
-                className="flex items-center text-gray-600 hover:text-gray-900 transition-colors"
+                className="flex items-center text-gray-600 hover:text-gray-900 transition-colors w-fit"
               >
                 <ArrowLeft size={20} className="mr-2" />
                 Back to Products
               </Link>
-              <h1 className="text-2xl font-bold text-gray-900">Edit Product</h1>
+              <h1 className="text-xl md:text-2xl font-bold text-gray-900">
+                Edit Product
+              </h1>
             </div>
           </div>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 md:p-6"
+        >
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 md:gap-8">
             {/* Basic Information */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-gray-900 border-b pb-2">Basic Information</h3>
-              
+            <div className="space-y-4 md:space-y-6">
+              <h3 className="text-lg font-semibold text-gray-900 border-b pb-2">
+                Basic Information
+              </h3>
+
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Product Name *
                 </label>
                 <input
@@ -201,9 +223,12 @@ export default function EditProduct() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="price"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Price ($) *
                   </label>
                   <input
@@ -219,7 +244,10 @@ export default function EditProduct() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="originalPrice" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="originalPrice"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Original Price ($)
                   </label>
                   <input
@@ -236,7 +264,10 @@ export default function EditProduct() {
               </div>
 
               <div>
-                <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="category"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Category *
                 </label>
                 <select
@@ -257,7 +288,10 @@ export default function EditProduct() {
               </div>
 
               <div>
-                <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="description"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Description *
                 </label>
                 <textarea
@@ -273,11 +307,16 @@ export default function EditProduct() {
             </div>
 
             {/* Specifications */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-gray-900 border-b pb-2">Specifications</h3>
-              
+            <div className="space-y-4 md:space-y-6">
+              <h3 className="text-lg font-semibold text-gray-900 border-b pb-2">
+                Specifications
+              </h3>
+
               <div>
-                <label htmlFor="material" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="material"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Material
                 </label>
                 <input
@@ -291,9 +330,12 @@ export default function EditProduct() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="weight" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="weight"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Weight
                   </label>
                   <input
@@ -307,7 +349,10 @@ export default function EditProduct() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="size" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="size"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Size
                   </label>
                   <input
@@ -323,7 +368,10 @@ export default function EditProduct() {
               </div>
 
               <div>
-                <label htmlFor="gemstone" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="gemstone"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Gemstone
                 </label>
                 <input
@@ -338,7 +386,10 @@ export default function EditProduct() {
               </div>
 
               <div>
-                <label htmlFor="stockQuantity" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="stockQuantity"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Stock Quantity *
                 </label>
                 <input
@@ -363,11 +414,14 @@ export default function EditProduct() {
                     onChange={handleInputChange}
                     className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                   />
-                  <label htmlFor="inStock" className="ml-2 block text-sm text-gray-700">
+                  <label
+                    htmlFor="inStock"
+                    className="ml-2 block text-sm text-gray-700"
+                  >
                     In Stock
                   </label>
                 </div>
-                
+
                 <div className="flex items-center">
                   <input
                     type="checkbox"
@@ -377,7 +431,10 @@ export default function EditProduct() {
                     onChange={handleInputChange}
                     className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                   />
-                  <label htmlFor="featured" className="ml-2 block text-sm text-gray-700">
+                  <label
+                    htmlFor="featured"
+                    className="ml-2 block text-sm text-gray-700"
+                  >
                     Featured Product
                   </label>
                 </div>
@@ -386,11 +443,16 @@ export default function EditProduct() {
           </div>
 
           {/* Images Section */}
-          <div className="mt-8">
-            <h3 className="text-lg font-semibold text-gray-900 border-b pb-2 mb-4">Product Images</h3>
+          <div className="mt-6 md:mt-8">
+            <h3 className="text-lg font-semibold text-gray-900 border-b pb-2 mb-4">
+              Product Images
+            </h3>
             <div className="space-y-3">
               {images.map((image, index) => (
-                <div key={index} className="flex items-center space-x-3">
+                <div
+                  key={index}
+                  className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-3"
+                >
                   <input
                     type="url"
                     value={image}
@@ -402,7 +464,7 @@ export default function EditProduct() {
                     <button
                       type="button"
                       onClick={() => removeImageField(index)}
-                      className="p-2 text-red-600 hover:text-red-800 transition-colors"
+                      className="p-2 text-red-600 hover:text-red-800 transition-colors self-start sm:self-auto"
                     >
                       <X size={20} />
                     </button>
@@ -421,20 +483,20 @@ export default function EditProduct() {
           </div>
 
           {/* Submit Button */}
-          <div className="mt-8 flex justify-end space-x-4">
+          <div className="mt-6 md:mt-8 flex flex-col sm:flex-row sm:justify-end space-y-3 sm:space-y-0 sm:space-x-4">
             <Link
               href="/admin/products"
-              className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors"
+              className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors text-center"
             >
               Cancel
             </Link>
             <button
               type="submit"
               disabled={isLoading}
-              className="flex items-center px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 transition-colors"
+              className="flex items-center justify-center px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 transition-colors"
             >
               <Save size={20} className="mr-2" />
-              {isLoading ? 'Updating...' : 'Update Product'}
+              {isLoading ? "Updating..." : "Update Product"}
             </button>
           </div>
         </form>

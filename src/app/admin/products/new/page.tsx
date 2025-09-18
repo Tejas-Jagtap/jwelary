@@ -1,35 +1,40 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { ArrowLeft, Save, X, Plus } from 'lucide-react';
-import { apiClient } from '@/lib/apiClient';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { ArrowLeft, Save, X, Plus } from "lucide-react";
+import { apiClient } from "@/lib/apiClient";
 
 export default function AddProduct() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
-    name: '',
-    price: '',
-    originalPrice: '',
-    description: '',
-    category: '',
+    name: "",
+    price: "",
+    originalPrice: "",
+    description: "",
+    category: "",
     inStock: true,
     featured: false,
-    stockQuantity: '',
-    material: '',
-    weight: '',
-    size: '',
-    gemstone: ''
+    stockQuantity: "",
+    material: "",
+    weight: "",
+    size: "",
+    gemstone: "",
   });
-  const [images, setImages] = useState<string[]>(['']);
+  const [images, setImages] = useState<string[]>([""]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { name, value, type } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value
+      [name]:
+        type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
     }));
   };
 
@@ -40,7 +45,7 @@ export default function AddProduct() {
   };
 
   const addImageField = () => {
-    setImages([...images, '']);
+    setImages([...images, ""]);
   };
 
   const removeImageField = (index: number) => {
@@ -55,12 +60,14 @@ export default function AddProduct() {
     setIsLoading(true);
 
     try {
-      const filteredImages = images.filter(img => img.trim() !== '');
-      
+      const filteredImages = images.filter((img) => img.trim() !== "");
+
       await apiClient.createProduct({
         name: formData.name,
         price: parseFloat(formData.price),
-        originalPrice: formData.originalPrice ? parseFloat(formData.originalPrice) : undefined,
+        originalPrice: formData.originalPrice
+          ? parseFloat(formData.originalPrice)
+          : undefined,
         description: formData.description,
         category: formData.category,
         images: filteredImages,
@@ -70,13 +77,13 @@ export default function AddProduct() {
         material: formData.material,
         weight: formData.weight,
         size: formData.size,
-        gemstone: formData.gemstone
+        gemstone: formData.gemstone,
       });
 
-      router.push('/admin/products');
+      router.push("/admin/products");
     } catch (error) {
-      console.error('Error creating product:', error);
-      alert('Failed to create product');
+      console.error("Error creating product:", error);
+      alert("Failed to create product");
     } finally {
       setIsLoading(false);
     }
@@ -89,27 +96,37 @@ export default function AddProduct() {
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 md:p-6 mb-4 md:mb-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
             <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-2 sm:space-y-0">
-              <Link 
+              <Link
                 href="/admin/products"
                 className="flex items-center text-gray-600 hover:text-gray-900 transition-colors w-fit"
               >
                 <ArrowLeft size={20} className="mr-2" />
                 Back to Products
               </Link>
-              <h1 className="text-xl md:text-2xl font-bold text-gray-900">Add New Product</h1>
+              <h1 className="text-xl md:text-2xl font-bold text-gray-900">
+                Add New Product
+              </h1>
             </div>
           </div>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 md:p-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 md:p-6"
+        >
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 md:gap-8">
             {/* Basic Information */}
             <div className="space-y-4 md:space-y-6">
-              <h3 className="text-lg font-semibold text-gray-900 border-b pb-2">Basic Information</h3>
-              
+              <h3 className="text-lg font-semibold text-gray-900 border-b pb-2">
+                Basic Information
+              </h3>
+
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Product Name *
                 </label>
                 <input
@@ -123,9 +140,12 @@ export default function AddProduct() {
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="price"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Price ($) *
                   </label>
                   <input
@@ -141,7 +161,10 @@ export default function AddProduct() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="originalPrice" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="originalPrice"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Original Price ($)
                   </label>
                   <input
@@ -158,7 +181,10 @@ export default function AddProduct() {
               </div>
 
               <div>
-                <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="category"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Category *
                 </label>
                 <select
@@ -179,7 +205,10 @@ export default function AddProduct() {
               </div>
 
               <div>
-                <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="description"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Description *
                 </label>
                 <textarea
@@ -196,10 +225,15 @@ export default function AddProduct() {
 
             {/* Specifications */}
             <div className="space-y-4 md:space-y-6">
-              <h3 className="text-lg font-semibold text-gray-900 border-b pb-2">Specifications</h3>
-              
+              <h3 className="text-lg font-semibold text-gray-900 border-b pb-2">
+                Specifications
+              </h3>
+
               <div>
-                <label htmlFor="material" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="material"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Material
                 </label>
                 <input
@@ -213,9 +247,12 @@ export default function AddProduct() {
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="weight" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="weight"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Weight
                   </label>
                   <input
@@ -229,7 +266,10 @@ export default function AddProduct() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="size" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="size"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Size
                   </label>
                   <input
@@ -245,7 +285,10 @@ export default function AddProduct() {
               </div>
 
               <div>
-                <label htmlFor="gemstone" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="gemstone"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Gemstone
                 </label>
                 <input
@@ -260,7 +303,10 @@ export default function AddProduct() {
               </div>
 
               <div>
-                <label htmlFor="stockQuantity" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="stockQuantity"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Stock Quantity *
                 </label>
                 <input
@@ -285,11 +331,14 @@ export default function AddProduct() {
                     onChange={handleInputChange}
                     className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                   />
-                  <label htmlFor="inStock" className="ml-2 block text-sm text-gray-700">
+                  <label
+                    htmlFor="inStock"
+                    className="ml-2 block text-sm text-gray-700"
+                  >
                     In Stock
                   </label>
                 </div>
-                
+
                 <div className="flex items-center">
                   <input
                     type="checkbox"
@@ -299,7 +348,10 @@ export default function AddProduct() {
                     onChange={handleInputChange}
                     className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                   />
-                  <label htmlFor="featured" className="ml-2 block text-sm text-gray-700">
+                  <label
+                    htmlFor="featured"
+                    className="ml-2 block text-sm text-gray-700"
+                  >
                     Featured Product
                   </label>
                 </div>
@@ -309,10 +361,15 @@ export default function AddProduct() {
 
           {/* Images Section */}
           <div className="mt-6 md:mt-8">
-            <h3 className="text-lg font-semibold text-gray-900 border-b pb-2 mb-4">Product Images</h3>
+            <h3 className="text-lg font-semibold text-gray-900 border-b pb-2 mb-4">
+              Product Images
+            </h3>
             <div className="space-y-3">
               {images.map((image, index) => (
-                <div key={index} className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
+                <div
+                  key={index}
+                  className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-3"
+                >
                   <input
                     type="url"
                     value={image}
@@ -356,7 +413,7 @@ export default function AddProduct() {
               className="flex items-center justify-center px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 transition-colors"
             >
               <Save size={20} className="mr-2" />
-              {isLoading ? 'Creating...' : 'Create Product'}
+              {isLoading ? "Creating..." : "Create Product"}
             </button>
           </div>
         </form>

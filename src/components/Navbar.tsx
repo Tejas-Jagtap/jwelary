@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useState, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
-import { Menu, X, ShoppingBag, Search, User } from 'lucide-react';
-import SearchModal from './SearchModal';
+import Link from "next/link";
+import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { Menu, X, ShoppingBag, Search, User } from "lucide-react";
+import SearchModal from "./SearchModal";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,31 +14,31 @@ const Navbar = () => {
   // Keyboard shortcut for search (Ctrl/Cmd + K)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
         setIsSearchOpen(true);
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
   // Close mobile menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as Element;
-      if (isMenuOpen && !target.closest('nav')) {
+      if (isMenuOpen && !target.closest("nav")) {
         setIsMenuOpen(false);
       }
     };
 
     if (isMenuOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isMenuOpen]);
 
@@ -52,13 +52,13 @@ const Navbar = () => {
   // Close mobile menu when user scrolls
   useEffect(() => {
     let scrollTimeout: NodeJS.Timeout;
-    
+
     const handleScroll = () => {
       // Clear any existing timeout
       if (scrollTimeout) {
         clearTimeout(scrollTimeout);
       }
-      
+
       // Set a small delay to avoid immediate closing
       scrollTimeout = setTimeout(() => {
         if (isMenuOpen) {
@@ -70,13 +70,13 @@ const Navbar = () => {
     if (isMenuOpen) {
       // Add a small delay before starting to listen for scroll events
       const delayTimeout = setTimeout(() => {
-        window.addEventListener('scroll', handleScroll, { passive: true });
+        window.addEventListener("scroll", handleScroll, { passive: true });
       }, 200);
 
       return () => {
         clearTimeout(delayTimeout);
         clearTimeout(scrollTimeout);
-        window.removeEventListener('scroll', handleScroll);
+        window.removeEventListener("scroll", handleScroll);
       };
     }
 
@@ -88,15 +88,15 @@ const Navbar = () => {
   }, [isMenuOpen]);
 
   const navLinks = [
-    { href: '/', label: 'Home' },
-    { href: '/products', label: 'Products' },
-    { href: '/about', label: 'About' },
-    { href: '/contact', label: 'Contact' },
+    { href: "/", label: "Home" },
+    { href: "/products", label: "Products" },
+    { href: "/about", label: "About" },
+    { href: "/contact", label: "Contact" },
   ];
 
   const isActiveLink = (href: string) => {
-    if (href === '/') {
-      return pathname === '/';
+    if (href === "/") {
+      return pathname === "/";
     }
     return pathname.startsWith(href);
   };
@@ -110,7 +110,9 @@ const Navbar = () => {
             <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center">
               <span className="text-white font-bold text-sm">J</span>
             </div>
-            <span className="text-xl font-bold text-gray-800">Jwelary</span>
+            <span className="text-2xl font-heading font-bold text-gray-800 tracking-tight">
+              Jwelary
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -121,8 +123,8 @@ const Navbar = () => {
                 href={link.href}
                 className={`transition-colors duration-200 font-medium relative ${
                   isActiveLink(link.href)
-                    ? 'text-yellow-600'
-                    : 'text-gray-600 hover:text-yellow-600'
+                    ? "text-yellow-600"
+                    : "text-gray-600 hover:text-yellow-600"
                 }`}
               >
                 {link.label}
@@ -135,7 +137,7 @@ const Navbar = () => {
 
           {/* Right side icons */}
           <div className="hidden md:flex items-center space-x-4">
-            <button 
+            <button
               onClick={() => setIsSearchOpen(true)}
               className="flex items-center p-2 text-gray-600 hover:text-yellow-600 transition-colors group"
             >
@@ -173,8 +175,8 @@ const Navbar = () => {
                   href={link.href}
                   className={`block px-3 py-2 transition-colors duration-200 font-medium rounded-md ${
                     isActiveLink(link.href)
-                      ? 'text-yellow-600 bg-yellow-50'
-                      : 'text-gray-600 hover:text-yellow-600 hover:bg-gray-50'
+                      ? "text-yellow-600 bg-yellow-50"
+                      : "text-gray-600 hover:text-yellow-600 hover:bg-gray-50"
                   }`}
                   onClick={() => setIsMenuOpen(false)}
                 >
@@ -182,7 +184,7 @@ const Navbar = () => {
                 </Link>
               ))}
               <div className="flex items-center space-x-4 px-3 py-2">
-                <button 
+                <button
                   onClick={() => {
                     setIsSearchOpen(true);
                     setIsMenuOpen(false);
@@ -205,11 +207,11 @@ const Navbar = () => {
           </div>
         )}
       </div>
-      
+
       {/* Search Modal */}
-      <SearchModal 
-        isOpen={isSearchOpen} 
-        onClose={() => setIsSearchOpen(false)} 
+      <SearchModal
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
       />
     </nav>
   );
